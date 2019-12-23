@@ -9,12 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import java.io.Serializable;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Files {
+public class Files implements Serializable {
+
+    private static final long serialVersionUID = 1217891551922389709L;
 
     @Id
     @GeneratedValue(generator = "system-uuid")
