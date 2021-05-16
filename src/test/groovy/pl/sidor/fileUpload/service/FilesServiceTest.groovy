@@ -1,10 +1,11 @@
-package service
+package pl.sidor.fileUpload.service
 
 import org.springframework.web.multipart.MultipartFile
 import pl.sidor.fileUpload.exception.FileStorageException
-import pl.sidor.fileUpload.model.Files
-import pl.sidor.fileUpload.repository.FilesRepository
-import pl.sidor.fileUpload.service.FilesService
+import pl.sidor.fileUpload.domain.model.entity.Files
+import pl.sidor.fileUpload.adapters.repository.FilesRepository
+import pl.sidor.fileUpload.adapters.service.FilesService
+import pl.sidor.fileUpload.exception.MessageException
 import spock.lang.Ignore
 import spock.lang.Specification
 
@@ -19,7 +20,7 @@ class FilesServiceTest extends Specification {
 
         when:
         filesRepository.save(_) >> multipartFile
-        service.storeFiles(multipartFile)
+        service.saveFile(multipartFile)
 
         then:
         1 * filesRepository.save(_)
@@ -32,11 +33,11 @@ class FilesServiceTest extends Specification {
         }
 
         when:
-        service.storeFiles(multipartFile)
+        service.saveFile(multipartFile)
 
         then:
         Exception exception = thrown(FileStorageException.class)
-        exception.message == "Nieoczekiwany bład  systemu!!!"
+        exception.message == MessageException.INTERNAL_ERROR.message
     }
 
     def "should throw FileStorageException when file  is null"() {
@@ -44,11 +45,11 @@ class FilesServiceTest extends Specification {
         MultipartFile multipartFile = null
 
         when:
-        service.storeFiles(multipartFile)
+        service.saveFile(multipartFile)
 
         then:
         Exception exception = thrown(FileStorageException.class)
-        exception.message == "Przekazywany plik  jest pusty!!!"
+        exception.message == MessageException.FILE_IS_NULL.message
     }
 
     @Ignore
@@ -59,7 +60,7 @@ class FilesServiceTest extends Specification {
 
         when:
         filesRepository.findById(fileID) >> Optional.of(multipartFile)
-        Files file = service.getFile(fileID)
+        Files file = service.findById(fileID)
 
         then:
         file != null
@@ -67,22 +68,22 @@ class FilesServiceTest extends Specification {
 
     def "should  throw  exception when get File  by id"() {
         given:
-        String fileID = "123"
+        Long fileID = 123L
 
         when:
         filesRepository.findById(fileID) >> Optional.empty()
-        service.getFile(fileID)
+        service.findById(fileID)
 
         then:
         Exception exception = thrown(FileStorageException.class)
-        exception.message=="Nie znaleziono pliku o podanym id : "+fileID
+        exception.message == "Nie znaleziono pliku o podanym id : " + fileID
     }
 
-    private MultipartFile getMultipartFile(){
-        MultipartFile multipartFile=Stub(){
-            getName()>>"Summer"
-            getBytes()>>2000
-            getOriginalFilename()>>"Holiday in Paris"
+    private MultipartFile getMultipartFile() {
+        MultipartFile multipartFile = Stub() {
+            getName() >> "Summer"
+            getBytes() >> 2000
+            getOriginalFilename() >> "Holiday in Paris"
         }
         return multipartFile
     }

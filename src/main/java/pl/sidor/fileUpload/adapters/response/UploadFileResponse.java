@@ -1,4 +1,4 @@
-package pl.sidor.fileUpload.upload;
+package pl.sidor.fileUpload.adapters.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
