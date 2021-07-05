@@ -6,7 +6,6 @@ import pl.sidor.fileUpload.domain.model.entity.Files
 import pl.sidor.fileUpload.adapters.repository.FilesRepository
 import pl.sidor.fileUpload.adapters.service.FilesService
 import pl.sidor.fileUpload.exception.MessageException
-import spock.lang.Ignore
 import spock.lang.Specification
 
 class FilesServiceTest extends Specification {
@@ -19,7 +18,7 @@ class FilesServiceTest extends Specification {
         MultipartFile multipartFile = getMultipartFile()
 
         when:
-        filesRepository.save(_) >> multipartFile
+        filesRepository.save(multipartFile) >> multipartFile
         service.saveFile(multipartFile)
 
         then:
@@ -37,7 +36,7 @@ class FilesServiceTest extends Specification {
 
         then:
         Exception exception = thrown(FileStorageException.class)
-        exception.message == MessageException.INTERNAL_ERROR.message
+        exception.message == MessageException.INVALID_FILENAME.message
     }
 
     def "should throw FileStorageException when file  is null"() {
@@ -52,14 +51,13 @@ class FilesServiceTest extends Specification {
         exception.message == MessageException.FILE_IS_NULL.message
     }
 
-    @Ignore
     def "should get File by id"() {
         given:
-        String fileID = "123"
-        MultipartFile multipartFile = getMultipartFile()
+        Long fileID = 123
+        Files files = prepareFile()
 
         when:
-        filesRepository.findById(fileID) >> Optional.of(multipartFile)
+        filesRepository.findById(fileID) >> Optional.of(files)
         Files file = service.findById(fileID)
 
         then:
@@ -86,5 +84,14 @@ class FilesServiceTest extends Specification {
             getOriginalFilename() >> "Holiday in Paris"
         }
         return multipartFile
+    }
+
+    private static Files prepareFile() {
+        Files files = new Files()
+        files.setFileName("file.jpg")
+        files.setFileType("jpg")
+        files.setFile("CONTENT".getBytes())
+
+        return files
     }
 }

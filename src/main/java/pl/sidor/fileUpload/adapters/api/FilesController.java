@@ -13,7 +13,7 @@ import pl.sidor.fileUpload.adapters.service.FilesService;
 import pl.sidor.fileUpload.adapters.response.UploadFileResponse;
 
 @RestController
-@RequestMapping("/api/files")
+@RequestMapping("/api/v1/files")
 public class FilesController {
 
     private final FilesService filesService;
