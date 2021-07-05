@@ -1,14 +1,14 @@
 package pl.sidor.fileUpload.adapters.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @AllArgsConstructor
 public class UploadFileResponse {
 
-    private final String fileName;
-    private final String fileType;
-    private final String fileUri;
-    private final long size;
+    String fileName;
+    String fileType;
+    String fileUri;
+    long size;
 }
