@@ -4,17 +4,17 @@ pipeline {
    stages {
         stage('Build') {
          steps {
-            sh "mvn clean compile"
+            echo "mvn clean compile"
          }
         }
         stage('Test') {
            steps {
-              sh "mvn test"
+              echo "mvn test"
            }
         }
         stage('Install') {
            steps {
-              sh "mvn clean install"
+              echo "mvn clean install"
            }
         }
    }
