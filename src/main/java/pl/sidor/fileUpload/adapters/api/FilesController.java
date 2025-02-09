@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.sidor.fileUpload.domain.model.entity.Files;
+import pl.sidor.fileUpload.domain.model.Files;
 import pl.sidor.fileUpload.adapters.service.FilesService;
 import pl.sidor.fileUpload.adapters.response.UploadFileResponse;
 
@@ -40,8 +40,9 @@ public class FilesController {
                 .body(new ByteArrayResource(file.getFile()));
     }
 
-    @PostMapping()
-    public UploadFileResponse uploadFileResponse(@RequestBody MultipartFile file) {
+
+    @PostMapping( consumes = "multipart/form-data")
+    public UploadFileResponse uploadFileResponse( @RequestBody MultipartFile file) {
         filesService.saveFile(file);
         return new UploadFileResponse(file.getName(), file.getContentType(), "URI", file.getSize());
     }
