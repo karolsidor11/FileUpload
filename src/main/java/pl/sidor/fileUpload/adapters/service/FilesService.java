@@ -1,6 +1,6 @@
 package pl.sidor.fileUpload.adapters.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pl.sidor.fileUpload.domain.ports.FilesPorts;
 import pl.sidor.fileUpload.exception.FileStorageException;
-import pl.sidor.fileUpload.domain.model.entity.Files;
+import pl.sidor.fileUpload.domain.model.Files;
 import pl.sidor.fileUpload.adapters.repository.FilesRepository;
 import pl.sidor.fileUpload.exception.MessageException;
 import pl.sidor.fileUpload.utils.StringUtil;
@@ -19,14 +19,9 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 @Service
+@RequiredArgsConstructor
 public class FilesService implements FilesPorts {
-
     private final FilesRepository filesRepository;
-
-    @Autowired
-    public FilesService(FilesRepository filesRepository) {
-        this.filesRepository = filesRepository;
-    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Files findById(final Long fileID) {

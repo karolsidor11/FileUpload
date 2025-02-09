@@ -1,11 +1,10 @@
-package pl.sidor.fileUpload.domain.model.entity;
+package pl.sidor.fileUpload.domain.model;
+
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.sidor.fileUpload.domain.model.base.BaseEntity;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -14,9 +13,12 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Files extends BaseEntity<Long> implements Serializable {
-
+public class Files implements Serializable {
     private static final long serialVersionUID = 1217891551922389709L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Column(name = "FILE_NAME")
     private String fileName;
@@ -27,6 +29,12 @@ public class Files extends BaseEntity<Long> implements Serializable {
     @Lob
     @Column(name = "FILE")
     private byte[] file;
+
+    public Files(String fileName, String fileType, byte[] file) {
+        this.fileName = fileName;
+        this.fileType = fileType;
+        this.file = file;
+    }
 
     @Override
     public boolean equals(Object o) {

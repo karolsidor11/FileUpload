@@ -2,7 +2,7 @@ package pl.sidor.fileUpload.service
 
 import org.springframework.web.multipart.MultipartFile
 import pl.sidor.fileUpload.exception.FileStorageException
-import pl.sidor.fileUpload.domain.model.entity.Files
+import pl.sidor.fileUpload.domain.model.Files
 import pl.sidor.fileUpload.adapters.repository.FilesRepository
 import pl.sidor.fileUpload.adapters.service.FilesService
 import pl.sidor.fileUpload.exception.MessageException
